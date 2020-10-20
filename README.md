@@ -1,2 +1,2 @@
 # yamif
-Yet Another Minecraft Inventory Framework
+**Y**et **A**nother **M**inecraft **I**nventory **F**ramework
