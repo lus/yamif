@@ -30,6 +30,9 @@ public class GUI {
     private final Inventory inventory;
     private final Map<Integer, Component> components;
     private final Map<Integer, Boolean> interactionPolicies;
+
+    // Define the inventory drag and close handlers
+    private Consumer<InventoryDragEvent> onDragHandler;
     private Consumer<InventoryCloseEvent> onCloseHandler;
 
     /**
@@ -81,6 +84,15 @@ public class GUI {
     public void setInteractionPolicy(SlotRange range, boolean interactionAllowed) {
         range.stripToInventorySize(this.inventory.getSize());
         range.getSlots().forEach(slot -> this.interactionPolicies.put(slot, interactionAllowed));
+    }
+
+    /**
+     * Registers the GUI drag handler
+     *
+     * @param handler The handler to call when an item gets dragged to or from the GUI
+     */
+    public void doOnDrag(Consumer<InventoryDragEvent> handler) {
+        this.onDragHandler = handler;
     }
 
     /**
@@ -160,6 +172,11 @@ public class GUI {
             // Check if interaction is allowed in all slots
             boolean interactionAllowed = event.getRawSlots().stream().allMatch(slot -> interactionPolicies.getOrDefault(slot, false));
             event.setCancelled(!interactionAllowed);
+
+            // Trigger the GUI drag handler
+            if (onDragHandler != null) {
+                onDragHandler.accept(event);
+            }
         }
 
         @EventHandler

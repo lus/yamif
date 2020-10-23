@@ -3,6 +3,7 @@ package dev.lukaesebrot.yamif.gui;
 import dev.lukaesebrot.yamif.components.Component;
 import dev.lukaesebrot.yamif.grid.SlotRange;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
 
 import java.util.function.Consumer;
 
@@ -49,6 +50,17 @@ public class GUIBuilder {
      */
     public GUIBuilder withInteractionPolicy(SlotRange range, boolean interactionAllowed) {
         this.gui.setInteractionPolicy(range, interactionAllowed);
+        return this;
+    }
+
+    /**
+     * Defines the GUI drag event handler
+     *
+     * @param handler The GUI drag handler to use
+     * @return The new GUI builder state
+     */
+    public GUIBuilder doOnDrag(Consumer<InventoryDragEvent> handler) {
+        this.gui.doOnDrag(handler);
         return this;
     }
 
