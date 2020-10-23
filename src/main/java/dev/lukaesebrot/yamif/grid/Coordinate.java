@@ -36,6 +36,24 @@ public class Coordinate {
     }
 
     /**
+     * Creates a new coordinate using a slot number
+     *
+     * @param slot The slot number
+     * @return The created coordinate
+     */
+    public static Coordinate fromSlot(int slot) {
+        // Validate the slot number
+        if (slot < 0 || slot > 53) {
+            throw new IllegalArgumentException("slot has to be in the interval [0, 53]");
+        }
+
+        // Calculate and create the coordinate
+        int x = slot - (slot / 9 * 9);
+        int y = slot / 9;
+        return new Coordinate(x, y);
+    }
+
+    /**
      * @return The x value of the coordinate
      */
     public int getX() {

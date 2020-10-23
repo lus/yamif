@@ -27,6 +27,7 @@ public interface Component {
      *
      * @param player The player who clicked on the component
      */
-    void onClick(Player player);
+    default void onClick(Player player) {
+    }
 
 }
