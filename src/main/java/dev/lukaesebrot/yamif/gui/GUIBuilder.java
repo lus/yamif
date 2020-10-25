@@ -2,6 +2,7 @@ package dev.lukaesebrot.yamif.gui;
 
 import dev.lukaesebrot.yamif.components.Component;
 import dev.lukaesebrot.yamif.grid.SlotRange;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 
@@ -50,6 +51,17 @@ public class GUIBuilder {
      */
     public GUIBuilder withInteractionPolicy(SlotRange range, boolean interactionAllowed) {
         this.gui.setInteractionPolicy(range, interactionAllowed);
+        return this;
+    }
+
+    /**
+     * Defines the GUI click event handler
+     *
+     * @param handler The GUI click handler to use
+     * @return The new GUI builder state
+     */
+    public GUIBuilder doOnClick(Consumer<InventoryClickEvent> handler) {
+        this.gui.doOnClick(handler);
         return this;
     }
 

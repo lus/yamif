@@ -31,7 +31,8 @@ public class GUI {
     private final Map<Integer, Component> components;
     private final Map<Integer, Boolean> interactionPolicies;
 
-    // Define the inventory drag and close handlers
+    // Define the inventory click, drag and close handlers
+    private Consumer<InventoryClickEvent> onClickHandler;
     private Consumer<InventoryDragEvent> onDragHandler;
     private Consumer<InventoryCloseEvent> onCloseHandler;
 
@@ -87,9 +88,18 @@ public class GUI {
     }
 
     /**
+     * Registers the GUI click handler
+     *
+     * @param handler The handler to call when an item gets clicked
+     */
+    public void doOnClick(Consumer<InventoryClickEvent> handler) {
+        this.onClickHandler = handler;
+    }
+
+    /**
      * Registers the GUI drag handler
      *
-     * @param handler The handler to call when an item gets dragged to or from the GUI
+     * @param handler The handler to call when an item gets dragged inside the GUI
      */
     public void doOnDrag(Consumer<InventoryDragEvent> handler) {
         this.onDragHandler = handler;
@@ -153,6 +163,11 @@ public class GUI {
             Component component = components.get(event.getSlot());
             if (component != null) {
                 component.onClick(event);
+            }
+
+            // Trigger the GUI click handler
+            if (onClickHandler != null) {
+                onClickHandler.accept(event);
             }
         }
 
