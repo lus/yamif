@@ -1,6 +1,6 @@
 package dev.lukaesebrot.yamif.components;
 
-import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
 /**
@@ -25,9 +25,9 @@ public interface Component {
     /**
      * Gets called whenever a player clicks on the component
      *
-     * @param player The player who clicked on the component
+     * @param event The event which got triggered
      */
-    default void onClick(Player player) {
+    default void onClick(InventoryClickEvent event) {
     }
 
 }

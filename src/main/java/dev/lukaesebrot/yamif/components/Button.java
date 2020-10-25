@@ -1,6 +1,7 @@
 package dev.lukaesebrot.yamif.components;
 
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.function.Consumer;
@@ -16,7 +17,7 @@ public class Button implements Component {
 
     // Define component-related variables
     private final ItemStack itemStack;
-    private final Consumer<Player> handler;
+    private final Consumer<InventoryClickEvent> handler;
 
     /**
      * Creates a new button component
@@ -24,7 +25,7 @@ public class Button implements Component {
      * @param itemStack The item stack to use as the icon
      * @param handler   The handler which gets called when a player clicks on the button
      */
-    public Button(ItemStack itemStack, Consumer<Player> handler) {
+    public Button(ItemStack itemStack, Consumer<InventoryClickEvent> handler) {
         this.itemStack = itemStack;
         this.handler = handler;
     }
@@ -40,8 +41,8 @@ public class Button implements Component {
     }
 
     @Override
-    public void onClick(Player player) {
-        handler.accept(player);
+    public void onClick(InventoryClickEvent event) {
+        handler.accept(event);
     }
 
 }

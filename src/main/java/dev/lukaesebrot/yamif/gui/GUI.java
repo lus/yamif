@@ -144,7 +144,6 @@ public class GUI {
             if (!(event.getWhoClicked() instanceof Player)) {
                 return;
             }
-            Player player = (Player) event.getWhoClicked();
 
             // Check if interaction is allowed in this slot
             boolean interactionAllowed = interactionPolicies.getOrDefault(event.getSlot(), false);
@@ -153,7 +152,7 @@ public class GUI {
             // Trigger the corresponding component
             Component component = components.get(event.getSlot());
             if (component != null) {
-                component.onClick(player);
+                component.onClick(event);
             }
         }
 
