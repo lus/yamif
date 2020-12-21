@@ -19,7 +19,7 @@ public class Coordinate {
      * @param x The x value of the coordinate
      * @param y The y value of the coordinate
      */
-    public Coordinate(int x, int y) {
+    public Coordinate(final int x, final int y) {
         // Validate the x value
         if (x < 0 || x > 8) {
             throw new IllegalArgumentException("x has to be in the interval [0, 8]");
@@ -41,15 +41,16 @@ public class Coordinate {
      * @param slot The slot number
      * @return The created coordinate
      */
-    public static Coordinate fromSlot(int slot) {
+    public static Coordinate fromSlot(final int slot) {
         // Validate the slot number
         if (slot < 0 || slot > 53) {
             throw new IllegalArgumentException("slot has to be in the interval [0, 53]");
         }
 
         // Calculate and create the coordinate
-        int x = slot - (slot / 9 * 9);
-        int y = slot / 9;
+        // REMINDER: Integer division!
+        final int x = slot - (slot / 9 * 9);
+        final int y = slot / 9;
         return new Coordinate(x, y);
     }
 
@@ -57,21 +58,21 @@ public class Coordinate {
      * @return The x value of the coordinate
      */
     public int getX() {
-        return x;
+        return this.x;
     }
 
     /**
      * @return The y value of the coordinate
      */
     public int getY() {
-        return y;
+        return this.y;
     }
 
     /**
      * @return The calculated slot of the coordinate
      */
     public int getSlot() {
-        return y * 9 + x;
+        return this.y * 9 + this.x;
     }
 
 }
