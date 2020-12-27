@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
@@ -157,7 +158,7 @@ public class GUI {
         @EventHandler
         public void handleInventoryClick(final InventoryClickEvent event) {
             // Check if the event was called during a shift-click
-            if (event.isShiftClick()) {
+            if (event.isShiftClick() || event.getAction().equals(InventoryAction.COLLECT_TO_CURSOR)) {
                 // Check if one of the two inventories is the GUI one
                 if (!this.corresponds(event.getView().getTopInventory()) && !this.corresponds(event.getView().getBottomInventory())) {
                     return;
