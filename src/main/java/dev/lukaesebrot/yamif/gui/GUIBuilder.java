@@ -26,7 +26,7 @@ public class GUIBuilder {
      * @param title The title of the GUI
      * @param rows  The amount of rows of the GUI
      */
-    public GUIBuilder(String title, int rows) {
+    public GUIBuilder(final String title, final int rows) {
         this.gui = new GUI(title, rows);
     }
 
@@ -37,7 +37,7 @@ public class GUIBuilder {
      * @param component The component to take the copies from
      * @return The new GUI builder state
      */
-    public GUIBuilder withComponents(SlotRange range, Component component) {
+    public GUIBuilder withComponents(final SlotRange range, final Component component) {
         this.gui.setComponents(range, component);
         return this;
     }
@@ -49,7 +49,7 @@ public class GUIBuilder {
      * @param interactionAllowed Whether or nor interaction should be allowed in the given range
      * @return The new GUI builder state
      */
-    public GUIBuilder withInteractionPolicy(SlotRange range, boolean interactionAllowed) {
+    public GUIBuilder withInteractionPolicy(final SlotRange range, final boolean interactionAllowed) {
         this.gui.setInteractionPolicy(range, interactionAllowed);
         return this;
     }
@@ -60,7 +60,7 @@ public class GUIBuilder {
      * @param handler The GUI click handler to use
      * @return The new GUI builder state
      */
-    public GUIBuilder doOnClick(Consumer<InventoryClickEvent> handler) {
+    public GUIBuilder doOnClick(final Consumer<InventoryClickEvent> handler) {
         this.gui.doOnClick(handler);
         return this;
     }
@@ -71,7 +71,7 @@ public class GUIBuilder {
      * @param handler The GUI drag handler to use
      * @return The new GUI builder state
      */
-    public GUIBuilder doOnDrag(Consumer<InventoryDragEvent> handler) {
+    public GUIBuilder doOnDrag(final Consumer<InventoryDragEvent> handler) {
         this.gui.doOnDrag(handler);
         return this;
     }
@@ -82,8 +82,18 @@ public class GUIBuilder {
      * @param handler The GUI close handler to use
      * @return The new GUI builder state
      */
-    public GUIBuilder doOnClose(Consumer<InventoryCloseEvent> handler) {
+    public GUIBuilder doOnClose(final Consumer<InventoryCloseEvent> handler) {
         this.gui.doOnClose(handler);
+        return this;
+    }
+
+    /**
+     * Allows shift-clicking on the GUI
+     *
+     * @return The new GUI builder state
+     */
+    public GUIBuilder allowShiftClick() {
+        this.gui.allowShiftClick();
         return this;
     }
 

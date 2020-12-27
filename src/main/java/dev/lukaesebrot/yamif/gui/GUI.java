@@ -36,16 +36,20 @@ public class GUI {
     private Consumer<InventoryDragEvent> onDragHandler;
     private Consumer<InventoryCloseEvent> onCloseHandler;
 
+    // Define the shift-click allowment state
+    private boolean shiftClickAllowed;
+
     /**
      * Creates a new GUI
      *
      * @param title The title of the GUI
-     * @param rows  The number of rowws of the GUI
+     * @param rows  The number of rows of the GUI
      */
-    public GUI(String title, int rows) {
+    public GUI(final String title, final int rows) {
         this.inventory = Bukkit.createInventory(new GUIInventoryHolder(), rows * 9, title);
         this.components = new HashMap<>();
         this.interactionPolicies = new HashMap<>();
+        this.shiftClickAllowed = false;
     }
 
     /**
@@ -54,10 +58,10 @@ public class GUI {
      * @param range     The range to set the components to
      * @param component The component to take the copies from
      */
-    public void setComponents(SlotRange range, Component component) {
+    public void setComponents(final SlotRange range, final Component component) {
         range.stripToInventorySize(this.inventory.getSize());
         range.getSlots().forEach(slot -> {
-            Component current = component.clone();
+            final Component current = component.clone();
             this.components.put(slot, current);
             this.inventory.setItem(slot, current.buildItemStack());
         });
@@ -68,7 +72,7 @@ public class GUI {
      *
      * @param range The range to remove the components in
      */
-    public void removeComponents(SlotRange range) {
+    public void removeComponents(final SlotRange range) {
         range.stripToInventorySize(this.inventory.getSize());
         range.getSlots().forEach(slot -> {
             this.components.remove(slot);
@@ -82,7 +86,7 @@ public class GUI {
      * @param range              The range to set the interaction policy in
      * @param interactionAllowed Whether or not interaction should be allowed in the given range
      */
-    public void setInteractionPolicy(SlotRange range, boolean interactionAllowed) {
+    public void setInteractionPolicy(final SlotRange range, final boolean interactionAllowed) {
         range.stripToInventorySize(this.inventory.getSize());
         range.getSlots().forEach(slot -> this.interactionPolicies.put(slot, interactionAllowed));
     }
@@ -92,7 +96,7 @@ public class GUI {
      *
      * @param handler The handler to call when an item gets clicked
      */
-    public void doOnClick(Consumer<InventoryClickEvent> handler) {
+    public void doOnClick(final Consumer<InventoryClickEvent> handler) {
         this.onClickHandler = handler;
     }
 
@@ -101,7 +105,7 @@ public class GUI {
      *
      * @param handler The handler to call when an item gets dragged inside the GUI
      */
-    public void doOnDrag(Consumer<InventoryDragEvent> handler) {
+    public void doOnDrag(final Consumer<InventoryDragEvent> handler) {
         this.onDragHandler = handler;
     }
 
@@ -110,8 +114,15 @@ public class GUI {
      *
      * @param handler The handler to call when the GUI gets closed
      */
-    public void doOnClose(Consumer<InventoryCloseEvent> handler) {
+    public void doOnClose(final Consumer<InventoryCloseEvent> handler) {
         this.onCloseHandler = handler;
+    }
+
+    /**
+     * Allows shift-clicking
+     */
+    public void allowShiftClick() {
+        this.shiftClickAllowed = true;
     }
 
     /**
@@ -120,8 +131,8 @@ public class GUI {
      * @param plugin The plugin to register the interaction listener with
      * @param player The player to open the GUI for
      */
-    public void open(JavaPlugin plugin, Player player) {
-        registerInteractionListener(plugin);
+    public void open(final JavaPlugin plugin, final Player player) {
+        this.registerInteractionListener(plugin);
         player.openInventory(this.inventory);
     }
 
@@ -130,7 +141,7 @@ public class GUI {
      *
      * @param plugin The plugin to register the event listener with
      */
-    private void registerInteractionListener(JavaPlugin plugin) {
+    private void registerInteractionListener(final JavaPlugin plugin) {
         plugin.getServer().getPluginManager().registerEvents(new InteractionListener(), plugin);
     }
 
@@ -144,9 +155,23 @@ public class GUI {
     private class InteractionListener implements Listener {
 
         @EventHandler
-        public void handleInventoryClick(InventoryClickEvent event) {
+        public void handleInventoryClick(final InventoryClickEvent event) {
+            // Check if the event was called during a shift-click
+            if (event.isShiftClick()) {
+                // Check if one of the two inventories is the GUI one
+                if (!this.corresponds(event.getView().getTopInventory()) && !this.corresponds(event.getView().getBottomInventory())) {
+                    return;
+                }
+
+                // Cancel the event if needed
+                if (!GUI.this.shiftClickAllowed) {
+                    event.setCancelled(true);
+                    return;
+                }
+            }
+
             // Check if the involved inventory corresponds to the GUI
-            if (!corresponds(event.getClickedInventory())) {
+            if (!this.corresponds(event.getClickedInventory())) {
                 return;
             }
 
@@ -156,25 +181,25 @@ public class GUI {
             }
 
             // Check if interaction is allowed in this slot
-            boolean interactionAllowed = interactionPolicies.getOrDefault(event.getSlot(), false);
+            final boolean interactionAllowed = GUI.this.interactionPolicies.getOrDefault(event.getSlot(), false);
             event.setCancelled(!interactionAllowed);
 
             // Trigger the corresponding component
-            Component component = components.get(event.getSlot());
+            final Component component = GUI.this.components.get(event.getSlot());
             if (component != null) {
                 component.onClick(event);
             }
 
             // Trigger the GUI click handler
-            if (onClickHandler != null) {
-                onClickHandler.accept(event);
+            if (GUI.this.onClickHandler != null) {
+                GUI.this.onClickHandler.accept(event);
             }
         }
 
         @EventHandler
-        public void handleInventoryDrag(InventoryDragEvent event) {
+        public void handleInventoryDrag(final InventoryDragEvent event) {
             // Check if the involved inventory corresponds to the GUI
-            if (!corresponds(event.getInventory())) {
+            if (!this.corresponds(event.getInventory())) {
                 return;
             }
 
@@ -184,19 +209,19 @@ public class GUI {
             }
 
             // Check if interaction is allowed in all slots
-            boolean interactionAllowed = event.getRawSlots().stream().allMatch(slot -> interactionPolicies.getOrDefault(slot, false));
+            final boolean interactionAllowed = event.getRawSlots().stream().allMatch(slot -> GUI.this.interactionPolicies.getOrDefault(slot, false));
             event.setCancelled(!interactionAllowed);
 
             // Trigger the GUI drag handler
-            if (onDragHandler != null) {
-                onDragHandler.accept(event);
+            if (GUI.this.onDragHandler != null) {
+                GUI.this.onDragHandler.accept(event);
             }
         }
 
         @EventHandler
-        public void handleInventoryClose(InventoryCloseEvent event) {
+        public void handleInventoryClose(final InventoryCloseEvent event) {
             // Check if the involved inventory corresponds to the GUI
-            if (!corresponds(event.getInventory())) {
+            if (!this.corresponds(event.getInventory())) {
                 return;
             }
 
@@ -206,8 +231,8 @@ public class GUI {
             }
 
             // Trigger the GUI close handler
-            if (onCloseHandler != null) {
-                onCloseHandler.accept(event);
+            if (GUI.this.onCloseHandler != null) {
+                GUI.this.onCloseHandler.accept(event);
             }
 
             // Unregister this listener
@@ -220,7 +245,7 @@ public class GUI {
          * @param inventory The inventory to check
          * @return Whether or not the given inventory corresponds to the GUI
          */
-        private boolean corresponds(Inventory inventory) {
+        private boolean corresponds(final Inventory inventory) {
             // Check if the inventory is present
             if (inventory == null) {
                 return false;
@@ -232,8 +257,8 @@ public class GUI {
             }
 
             // Check if the UUIDs of the inventory holders match
-            GUIInventoryHolder inventoryHolder = (GUIInventoryHolder) inventory.getHolder();
-            GUIInventoryHolder guiHolder = (GUIInventoryHolder) GUI.this.inventory.getHolder();
+            final GUIInventoryHolder inventoryHolder = (GUIInventoryHolder) inventory.getHolder();
+            final GUIInventoryHolder guiHolder = (GUIInventoryHolder) GUI.this.inventory.getHolder();
             return inventoryHolder.getUUID().equals(guiHolder.getUUID());
         }
 
