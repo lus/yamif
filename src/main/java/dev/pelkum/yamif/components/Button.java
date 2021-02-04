@@ -1,4 +1,4 @@
-package dev.lukaesebrot.yamif.components;
+package dev.pelkum.yamif.components;
 
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
@@ -24,24 +24,24 @@ public class Button implements Component {
      * @param itemStack The item stack to use as the icon
      * @param handler   The handler which gets called when a player clicks on the button
      */
-    public Button(ItemStack itemStack, Consumer<InventoryClickEvent> handler) {
+    public Button(final ItemStack itemStack, final Consumer<InventoryClickEvent> handler) {
         this.itemStack = itemStack;
         this.handler = handler;
     }
 
     @Override
     public ItemStack buildItemStack() {
-        return itemStack;
+        return this.itemStack;
     }
 
     @Override
     public Component clone() {
-        return new Button(itemStack, handler);
+        return new Button(this.itemStack, this.handler);
     }
 
     @Override
-    public void onClick(InventoryClickEvent event) {
-        handler.accept(event);
+    public void onClick(final InventoryClickEvent event) {
+        this.handler.accept(event);
     }
 
 }

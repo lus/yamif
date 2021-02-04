@@ -1,4 +1,4 @@
-package dev.lukaesebrot.yamif.gui;
+package dev.pelkum.yamif.gui;
 
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
@@ -21,7 +21,7 @@ public class GUIInventoryHolder implements InventoryHolder {
      * @return The UUID of this inventory holder
      */
     public UUID getUUID() {
-        return uuid;
+        return this.uuid;
     }
 
     @Override

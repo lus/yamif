@@ -1,4 +1,4 @@
-package dev.lukaesebrot.yamif.components;
+package dev.pelkum.yamif.components;
 
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
@@ -27,7 +27,7 @@ public interface Component {
      *
      * @param event The event which got triggered
      */
-    default void onClick(InventoryClickEvent event) {
+    default void onClick(final InventoryClickEvent event) {
     }
 
 }

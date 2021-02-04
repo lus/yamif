@@ -1,4 +1,4 @@
-package dev.lukaesebrot.yamif.grid;
+package dev.pelkum.yamif.grid;
 
 import java.util.Collections;
 import java.util.Set;
@@ -21,7 +21,7 @@ public class SlotRange {
      *
      * @param slots The set of slots
      */
-    private SlotRange(Set<Integer> slots) {
+    private SlotRange(final Set<Integer> slots) {
         this.slots = slots;
     }
 
@@ -29,7 +29,7 @@ public class SlotRange {
      * @return The set of slots
      */
     public Set<Integer> getSlots() {
-        return Collections.unmodifiableSet(slots);
+        return Collections.unmodifiableSet(this.slots);
     }
 
     /**
@@ -38,10 +38,10 @@ public class SlotRange {
      * @param ranges The slot ranges to combine
      * @return A slot range consisting of the given ones
      */
-    public static SlotRange combine(SlotRange... ranges) {
-        Set<Integer> slots = ConcurrentHashMap.newKeySet();
+    public static SlotRange combine(final SlotRange... ranges) {
+        final Set<Integer> slots = ConcurrentHashMap.newKeySet();
 
-        for (SlotRange range : ranges) {
+        for (final SlotRange range : ranges) {
             slots.addAll(range.getSlots());
         }
 
@@ -54,7 +54,7 @@ public class SlotRange {
      * @param coordinate The coordinate to use
      * @return The created slot range
      */
-    public static SlotRange single(Coordinate coordinate) {
+    public static SlotRange single(final Coordinate coordinate) {
         return range(coordinate, coordinate);
     }
 
@@ -77,11 +77,11 @@ public class SlotRange {
      * @param b Another corner-coordinate of the rectangle
      * @return The created slot range
      */
-    public static SlotRange range(Coordinate a, Coordinate b) {
-        Set<Integer> slots = ConcurrentHashMap.newKeySet();
+    public static SlotRange range(final Coordinate a, final Coordinate b) {
+        final Set<Integer> slots = ConcurrentHashMap.newKeySet();
 
-        int slot0 = Math.min(a.getSlot(), b.getSlot());
-        int slot1 = Math.max(a.getSlot(), b.getSlot());
+        final int slot0 = Math.min(a.getSlot(), b.getSlot());
+        final int slot1 = Math.max(a.getSlot(), b.getSlot());
 
         for (int slot = slot0; slot <= slot1; slot++) {
             slots.add(slot);
@@ -97,18 +97,18 @@ public class SlotRange {
      * @param b Another corner-coordinate of the rectangle
      * @return The created slot range
      */
-    public static SlotRange rectangle(Coordinate a, Coordinate b) {
-        Set<Integer> slots = ConcurrentHashMap.newKeySet();
+    public static SlotRange rectangle(final Coordinate a, final Coordinate b) {
+        final Set<Integer> slots = ConcurrentHashMap.newKeySet();
 
-        int x0 = Math.min(a.getX(), b.getX());
-        int x1 = Math.max(a.getX(), b.getX());
+        final int x0 = Math.min(a.getX(), b.getX());
+        final int x1 = Math.max(a.getX(), b.getX());
 
-        int y0 = Math.min(a.getY(), b.getY());
-        int y1 = Math.max(a.getY(), b.getY());
+        final int y0 = Math.min(a.getY(), b.getY());
+        final int y1 = Math.max(a.getY(), b.getY());
 
         for (int x = x0; x <= x1; x++) {
             for (int y = y0; y <= y1; y++) {
-                int slot = y * 9 + x;
+                final int slot = y * 9 + x;
                 slots.add(slot);
             }
         }
@@ -122,7 +122,7 @@ public class SlotRange {
      * @param row The row to use the slots of
      * @return The created slot range
      */
-    public static SlotRange row(int row) {
+    public static SlotRange row(final int row) {
         return rectangle(
                 new Coordinate(0, row),
                 new Coordinate(8, row)
@@ -135,7 +135,7 @@ public class SlotRange {
      * @param column The column to use the slots of
      * @return The created slot range
      */
-    public static SlotRange column(int column) {
+    public static SlotRange column(final int column) {
         return rectangle(
                 new Coordinate(column, 0),
                 new Coordinate(column, 5)
@@ -147,12 +147,12 @@ public class SlotRange {
      *
      * @param size The inventory size (has to be a positive multiple of 9)
      */
-    public void stripToInventorySize(int size) {
+    public void stripToInventorySize(final int size) {
         if (size % 9 != 0 || size < 9) {
             throw new IllegalArgumentException("size has to be a positive multiple of 9");
         }
 
-        slots.stream().filter(slot -> slot >= size).forEach(slots::remove);
+        this.slots.stream().filter(slot -> slot >= size).forEach(this.slots::remove);
     }
 
 }

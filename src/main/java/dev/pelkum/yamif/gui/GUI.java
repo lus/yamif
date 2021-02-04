@@ -1,7 +1,7 @@
-package dev.lukaesebrot.yamif.gui;
+package dev.pelkum.yamif.gui;
 
-import dev.lukaesebrot.yamif.components.Component;
-import dev.lukaesebrot.yamif.grid.SlotRange;
+import dev.pelkum.yamif.components.Component;
+import dev.pelkum.yamif.grid.SlotRange;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

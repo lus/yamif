@@ -1,7 +1,7 @@
-package dev.lukaesebrot.yamif.gui;
+package dev.pelkum.yamif.gui;
 
-import dev.lukaesebrot.yamif.components.Component;
-import dev.lukaesebrot.yamif.grid.SlotRange;
+import dev.pelkum.yamif.components.Component;
+import dev.pelkum.yamif.grid.SlotRange;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;

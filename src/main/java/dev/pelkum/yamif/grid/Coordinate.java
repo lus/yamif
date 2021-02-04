@@ -1,4 +1,4 @@
-package dev.lukaesebrot.yamif.grid;
+package dev.pelkum.yamif.grid;
 
 /**
  * Represents a coordinate

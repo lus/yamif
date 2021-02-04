@@ -4,9 +4,34 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>dev.lukaesebrot</groupId>
+    <name>${project.groupId}.${project.artifactId}</name>
+    <description>Yet another Minecraft inventory framework</description>
+    <url>https://github.com/lus/yamif</url>
+
+    <groupId>dev.pelkum</groupId>
     <artifactId>yamif</artifactId>
     <version>1.0.0-SNAPSHOT</version>
+
+    <developers>
+        <developer>
+            <name>Lukas Schulte Pelkum</name>
+            <email>kbrt@protonmail.com</email>
+            <url>https://pelkum.dev</url>
+        </developer>
+    </developers>
+
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>http://www.opensource.org/licenses/mit-license.php</url>
+        </license>
+    </licenses>
+
+    <scm>
+        <connection>scm:git:git://github.com/lus/yamif.git</connection>
+        <developerConnection>scm:git:ssh://github.com:lus/yamif.git</developerConnection>
+        <url>http://github.com/lus/yamif/tree/master</url>
+    </scm>
 
     <repositories>
         <repository>

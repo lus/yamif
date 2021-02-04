@@ -1,4 +1,4 @@
-package dev.lukaesebrot.yamif.components;
+package dev.pelkum.yamif.components;
 
 import org.bukkit.inventory.ItemStack;
 
@@ -19,18 +19,18 @@ public class Item implements Component {
      *
      * @param itemStack The item stack to use
      */
-    public Item(ItemStack itemStack) {
+    public Item(final ItemStack itemStack) {
         this.itemStack = itemStack;
     }
 
     @Override
     public ItemStack buildItemStack() {
-        return itemStack;
+        return this.itemStack;
     }
 
     @Override
     public Component clone() {
-        return new Item(itemStack);
+        return new Item(this.itemStack);
     }
 
 }
